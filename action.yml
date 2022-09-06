@@ -24,7 +24,7 @@ runs:
         set -xe
 
         /usr/bin/git clone \
-          --branch ${{ github.ref || github.base_ref }} \
+          --branch ${{ github.base_ref || github.ref }} \
           --depth=1 \
           --reference-if-able=${{ inputs.reference_dir }} \
           https://${{ inputs.github_actor }}:${{ inputs.github_token }}@github.com/${{ inputs.github_repository }}.git \
