@@ -24,18 +24,8 @@ runs:
         set -xe
 
         /usr/bin/git clone \
-          --branch ${{ github.base_ref || github.ref }} \
+          --branch ${{ github.ref_name }} \
           --depth=1 \
           --reference-if-able=${{ inputs.reference_dir }} \
           https://${{ inputs.github_actor }}:${{ inputs.github_token }}@github.com/${{ inputs.github_repository }}.git \
           ${{ inputs.checkout_dir }}
-
-    - shell: bash
-      if: ${{ github.event_name == 'pull_request' }}
-      run: |
-        set -xe
-
-        pushd ${{ inputs.checkout_dir }}
-          /usr/bin/git fetch origin pull/${{ github.ref_name }}:pull/${{ github.ref_name }}
-          /usr/bin/git checkout pull/${{ github.ref_name }}
-        popd
