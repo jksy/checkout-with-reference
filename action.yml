@@ -13,6 +13,9 @@ inputs:
   reference_dir:
     description: 'Reference repository directory.'
     required: true
+  fetch_lfs:
+    description: 'Clone with fetching LFS .'
+    default: false
   checkout_dir:
     description: 'expoterd NFS directory with host ip address. ex:10.0.0.1:/exports'
     required: true
@@ -23,9 +26,15 @@ runs:
       run: |
         set -xe
 
+        if ! ${{ inputs.fetch_lfs }} ; then
+          export GIT_LFS_SKIP_SMUDGE=1
+        fi
+
         /usr/bin/git clone \
           --branch ${{ github.ref_name }} \
           --depth=1 \
           --reference-if-able=${{ inputs.reference_dir }} \
           https://${{ inputs.github_actor }}:${{ inputs.github_token }}@github.com/${{ inputs.github_repository }}.git \
           ${{ inputs.checkout_dir }}
+
+        unset GIT_LFS_SKIP_SMUDGE
