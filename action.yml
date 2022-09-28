@@ -10,6 +10,12 @@ inputs:
   github_repository:
     description: 'GitHub repository. $github.repository'
     required: true
+  branch_name:
+    description: 'Specify branch_name for checking out'
+    required: false
+  sha:
+    description: 'Specify commit sha for checking out(default: $github.sha)'
+    required: false
   reference_dir:
     description: 'Reference repository directory.'
     required: true
@@ -26,6 +32,12 @@ runs:
       run: |
         set -xe
 
+        export __SHA=${{ inputs.sha || github.sha }}
+        if [ ! -z "${{ inputs.branch_name }}" ] ;then
+          # Override sha value if branch_name is presented.
+          __SHA=$(/usr/bin/git ls-remote https://${{ inputs.github_actor }}:${{ inputs.github_token }}@github.com/${{ inputs.github_repository }}.git ${{ inputs.branch_name }})
+        fi
+
         if ! ${{ inputs.fetch_lfs }} ; then
           export GIT_LFS_SKIP_SMUDGE=1
         fi
@@ -37,8 +49,9 @@ runs:
           ${{ inputs.checkout_dir }}
 
         pushd ${{ inputs.checkout_dir }}
-          /usr/bin/git fetch --depth=1 origin ${{ github.sha }}
+          /usr/bin/git fetch --depth=1 origin $__SHA
           /usr/bin/git reset --hard FETCH_HEAD
         popd
 
         unset GIT_LFS_SKIP_SMUDGE
+        unset __SHA
