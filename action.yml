@@ -31,10 +31,14 @@ runs:
         fi
 
         /usr/bin/git clone \
-          --branch ${{ github.ref_name }} \
           --depth=1 \
           --reference-if-able=${{ inputs.reference_dir }} \
           https://${{ inputs.github_actor }}:${{ inputs.github_token }}@github.com/${{ inputs.github_repository }}.git \
           ${{ inputs.checkout_dir }}
+
+        pushd ${{ inputs.checkout_dir }}
+          /usr/bin/git fetch --depth=1 origin ${{ github.sha }}
+          /usr/bin/git reset --hard FETCH_HEAD
+        popd
 
         unset GIT_LFS_SKIP_SMUDGE
