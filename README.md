@@ -1,7 +1,9 @@
 # GitHub Action checkout with reference parameter
-GitHub Actions上でソースコードをcloneします。
-referenceを指定できるようにしています。
-NFS等で複数のサーバから共有しているとネットワーク転送量の低減や時間の短縮ができます
+GitHub Actions上でソースコードをcloneします。referenceを指定できるようにしています。
+
+NFS等でリファレンス用のリポジトリを用意しておくと、ネットワーク転送量の低減や時間の短縮を期待できます。
+リファレンスリポジトリについては [git](https://git-scm.com/docs/git-clone/ja) の `--reference` パラメータや、
+https://swet.dena.com/entry/2021/07/12/120000 を参照してください。
 
 # Usage
 
