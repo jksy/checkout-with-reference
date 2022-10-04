@@ -3,13 +3,16 @@ description: 'Checkout source code with reference option'
 inputs:
   github_token:
     description: 'GitHub token $github.token'
-    required: true
+    default: ${{ github.token }}
+    required: false
   github_actor:
     description: 'GitHub actor. $github.actor'
-    required: true
+    default: ${{ github.actor }}
+    required: false
   github_repository:
     description: 'GitHub repository. $github.repository'
-    required: true
+    default: ${{ github.repository }}
+    required: false
   branch_name:
     description: 'Specify branch_name for checking out'
     required: false
