@@ -30,11 +30,10 @@ https://swet.dena.com/entry/2021/07/12/120000 を参照してください。
     sha: ${{ github.sha }}
 
     # リファレンス先の clone 済みのディレクトリを指定します。
-    # リファレンスリポジトリについては [git](https://git-scm.com/docs/git-clone/ja) の `--reference` パラメータを参照してください。
     reference_dir: '/mnt/shared_dir_like_as_nfs/repository.git'
 
     # clone時にLFSのデータをfetchするかどうかを指定します
-    # clone後、git lfs pullしたほうが大体のケースで早いです
+    # 大体のケースで clone後に自前で git lfs pull したほうが早いです
     fetch_lfs: false
 
     # checkout先のディレクトリ名を指定します
@@ -43,7 +42,7 @@ https://swet.dena.com/entry/2021/07/12/120000 を参照してください。
 
 # Example
 
-リファレンスリポジトリ(/mnt/shared_dir_like_as_nfs/repository.gitに存在する)付きで、カレントディレクトリにcheckoutします
+リファレンスリポジトリ( `/mnt/shared_dir_like_as_nfs/repository.git` に存在する)付きで、カレントディレクトリにcheckoutします
 
 ```yaml
 - uses: jksy/checkout-with-reference@v1
