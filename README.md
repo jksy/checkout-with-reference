@@ -39,6 +39,10 @@ https://swet.dena.com/entry/2021/07/12/120000 を参照してください。
 
     # checkout先のディレクトリ名を指定します
     checkout_dir: .
+
+    # fetch時に発生するdetected dubious ownership in repositoryを抑制する。(git config safe.directoryを設定します)
+    # Default: true
+    ignore_dubious_ownership: true
 ```
 
 # Example
