@@ -28,6 +28,9 @@ inputs:
   checkout_dir:
     description: 'expoterd NFS directory with host ip address. ex:10.0.0.1:/exports'
     required: true
+  ignore_dubious_ownership:
+    description: 'Ignore "detected dubious ownership in repository"'
+    default: true
 runs:
   using: "composite"
   steps:
@@ -36,12 +39,12 @@ runs:
         set -xe
 
         export __SHA=${{ inputs.sha || github.sha }}
-        if [ ! -z "${{ inputs.branch_name }}" ] ;then
+        if [ ! -z "${{ inputs.branch_name }}" ]; then
           # Override sha value if branch_name is presented.
           __SHA=$(/usr/bin/git ls-remote https://${{ inputs.github_actor }}:${{ inputs.github_token }}@github.com/${{ inputs.github_repository }}.git ${{ inputs.branch_name }})
         fi
 
-        if ! ${{ inputs.fetch_lfs }} ; then
+        if ! ${{ inputs.fetch_lfs }}; then
           export GIT_LFS_SKIP_SMUDGE=1
         fi
 
@@ -52,6 +55,9 @@ runs:
           ${{ inputs.checkout_dir }}
 
         pushd ${{ inputs.checkout_dir }}
+          if ${{ inputs.ignore_dubious_ownership }}; then
+            /usr/bin/git config --global --add safe.directory $(pwd)
+          fi
           /usr/bin/git fetch --depth=1 origin $__SHA
           /usr/bin/git reset --hard FETCH_HEAD
         popd
